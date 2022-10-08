@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->date('birthday')->nullable();
             $table->string('fcm_token')->nullable();
+            $table->boolean('isVerified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

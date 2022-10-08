@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,6 +31,10 @@ class EmpSeeder extends Seeder
         Category::create([
             'name' => 'Electrical'
         ]);
-
+        Admin::create([
+            'name' => 'sparky',
+            'email' => 'admin@sparky.com',
+            'password' => bcrypt('12332100')
+        ]);
     }
 }

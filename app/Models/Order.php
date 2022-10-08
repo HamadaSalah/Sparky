@@ -9,7 +9,11 @@ class Order extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    protected $casts = [
-        'type' => 'array'
-    ];
+     
+    public function user() {
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
+    public function category() {
+        return $this->hasOne('App\Models\Category', 'id', 'cat_id');
+    }
 }
