@@ -26,8 +26,9 @@ class AuthController extends Controller
                 'phone' => request()->phone,
                 'password' => bcrypt('testpass')
             ]);
+            $user = User::findOrFail($user->id);
             $token = Auth::guard('api')->login($user);
-            return response()->json(['data' => auth('api')->user(), 'token' => $token], 200);
+            return response()->json(['data' =>  $user, 'token' => $token], 210);
         }
         $user = User::where('phone', $request->phone)->first();
         $token = Auth::guard('api')->login($user);
