@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -39,5 +40,18 @@ class OrdersController extends Controller
     public function order($id) {
         $order = Order::findOrFail($id);
         return response()->json(['data' => $order], 200);
+    }
+    public function SendLocation(Request $request) {
+        $request->validate([
+            'lang' => 'required',
+            'lat' => 'required',
+            'user_id' => 'required'
+        ]);
+        $user = User::findOrFail($request->user_id);
+        $user->update([
+            'lang' => $request->lang,
+            'lat' => $request->lat,
+        ]);
+        return response()->json(['data' => $user]);
     }
 }

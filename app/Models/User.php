@@ -26,7 +26,9 @@ class User extends Authenticatable implements JWTSubject
         'isVerified',
         'gender',
         'birthday',
-        'fcm_token'
+        'fcm_token',
+        'lang',
+        'lat'
     ];
 
     /**
