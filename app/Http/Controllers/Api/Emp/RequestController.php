@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Emp;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
+use App\Models\Order;
 use App\Models\OrderRequest;
 use Illuminate\Http\Request;
 
@@ -38,7 +40,19 @@ class RequestController extends Controller
         $mybids = OrderRequest::with('order')->where('employee_id', $id)->whereRelation('order', 'status', 'Canceled')->get();
         return response()->json(['data' => $mybids], 200);
     }
-    public function NewEmployeeOrders() {
-        
+    public function NewEmployeeOrders($id) {
+        $orders = Book::where('employee_id', $id)->get();
+        return response()->json(['data' => $orders], 200);
+    }
+    public function ChangeBookStatus(Request $request) {
+        $request->validate([
+            'id' => 'required',
+            'status' => 'required'
+        ]);
+        $order = Book::findOrFail($request->id);
+        $order->update([
+            'status' => $request->status
+        ]);
+        return response()->json(['data' => $order], 200);
     }
 }

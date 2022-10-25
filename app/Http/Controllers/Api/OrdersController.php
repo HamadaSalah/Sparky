@@ -19,7 +19,7 @@ class OrdersController extends Controller
         ]);
         $requestData = $request->only(['cat_id','type','user_id']);
         $order = Order::create($requestData);
-        $emp = Employee::findOrFail($request->user_id);
+        $emp = User::findOrFail($request->user_id);
         $employees =   Employee::selectRaw("ST_Distance_Sphere(
             Point($emp->lang, $emp->lat), 
             Point(lang, lat)
@@ -84,7 +84,7 @@ class OrdersController extends Controller
         return response()->json(['user' => $user, 'order' => $order]);
     }
     public function employeeprofile($id) {
-        $empl = Employee::findOrFail($id);
+        $empl = Employee::with('ratings')->findOrFail($id);
         return response()->json(['employee' => $empl], 200);
     }
 }
