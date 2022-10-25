@@ -68,20 +68,14 @@ class OrdersController extends Controller
         $request->validate([
             'lang' => 'required',
             'lat' => 'required',
-            'order_id' => 'required',
             'user_id' => 'required',
         ]);
         $user = User::findOrFail($request->user_id);
-        $order = Order::findOrFail($request->user_id);
         $user->update([
             'lang' => $request->lang,
             'lat' => $request->lat,
         ]);
-        $order->update([
-            'lang' => $request->lang,
-            'lat' => $request->lat,
-        ]);
-        return response()->json(['user' => $user, 'order' => $order]);
+        return response()->json(['user' => $user]);
     }
     public function employeeprofile($id) {
         $empl = Employee::with('ratings')->findOrFail($id);
