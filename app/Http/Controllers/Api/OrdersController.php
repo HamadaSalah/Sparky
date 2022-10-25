@@ -20,15 +20,16 @@ class OrdersController extends Controller
         $requestData = $request->only(['cat_id','type','user_id']);
         $order = Order::create($requestData);
         $emp = User::findOrFail($request->user_id);
-        $employees =   Employee::selectRaw("ST_Distance_Sphere(
-            Point($emp->lang, $emp->lat), 
-            Point(lang, lat)
-        ) * ? as distance", [1000])
-        ->whereRaw("ST_Distance_Sphere(
-                    Point($emp->lang, $emp->lat), 
-                    Point(lang, lat)
-                ) <  ? ", 50000)
-        ->select(['id', 'name', 'photo', 'phone', 'fcm_token'])->get();
+        // $employees =   Employee::selectRaw("ST_Distance_Sphere(
+        //     Point($emp->lang, $emp->lat), 
+        //     Point(lang, lat)
+        // ) * ? as distance", [1000])
+        // ->whereRaw("ST_Distance_Sphere(
+        //             Point($emp->lang, $emp->lat), 
+        //             Point(lang, lat)
+        //         ) <  ? ", 50000)
+        // ->select(['id', 'name', 'photo', 'phone', 'fcm_token'])->get();
+        $employees = Employee::all();
         return response()->json(['data' => $order, 'Employees' => $employees], 200);
     }
     public function BookOrder(Request $request) {
