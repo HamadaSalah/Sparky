@@ -33,11 +33,14 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
 Route::group(['middleware' => 'api'], function ($router) {
     Route::post('AddNewOrder', [OrdersController::class, 'AddNewOrder']);
     Route::post('SendLocation', [OrdersController::class, 'SendLocation']);
+    Route::post('BookOrder', [OrdersController::class, 'BookOrder']);
     Route::get('myorders/{id}', [OrdersController::class, 'myorders']);
+    Route::post('dis', [OrdersController::class, 'dis']);
     Route::get('order/{id}', [OrdersController::class, 'order']);
     Route::get('myordersCurrent/{id}', [OrdersController::class, 'myordersCurrent']);
     Route::get('myordersCompleted/{id}', [OrdersController::class, 'myordersCompleted']);
     Route::get('myordersCanceled/{id}', [OrdersController::class, 'myordersCanceled']);
+    Route::get('employeeprofile/{id}', [OrdersController::class, 'employeeprofile']);
 });
 
 //APIS
@@ -59,5 +62,7 @@ Route::group(['middleware' => 'api','prefix' => 'Employee'], function ($router) 
     Route::get('MyCurrentBid/{id}', [RequestController::class, 'MyCurrentBid']);
     Route::get('MyCompletedBid/{id}', [RequestController::class, 'MyCompletedBid']);
     Route::get('MyCanceledBid/{id}', [RequestController::class, 'MyCanceledBid']);
+    //new waiting orders
+    Route::get('NewEmployeeOrders/{id}', [RequestController::class, 'NewEmployeeOrders']);
 });
 

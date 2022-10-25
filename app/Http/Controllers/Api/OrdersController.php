@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
+use App\Models\Employee;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +19,28 @@ class OrdersController extends Controller
         ]);
         $requestData = $request->only(['cat_id','type','user_id']);
         $order = Order::create($requestData);
-        return response()->json(['data' => $order], 200);
+        $emp = Employee::findOrFail($request->user_id);
+        $employees =   Employee::selectRaw("ST_Distance_Sphere(
+            Point($emp->lang, $emp->lat), 
+            Point(lang, lat)
+        ) * ? as distance", [1000])
+        ->whereRaw("ST_Distance_Sphere(
+                    Point($emp->lang, $emp->lat), 
+                    Point(lang, lat)
+                ) <  ? ", 50000)
+        ->select(['id', 'name', 'photo', 'phone', 'fcm_token'])->get();
+        return response()->json(['data' => $order, 'Employees' => $employees], 200);
+    }
+    public function BookOrder(Request $request) {
+        $request->validate([
+            'order_id' => 'required',
+            'user_id' => 'required',
+            'employee_id' => 'required'
+        ]);
+        $requestData = $request->only(['order_id','user_id','employee_id']);
+        $book = Book::create($requestData);
+        $book = Book::with('user')->with('order')->with('employee')->findOrFail($book->id);
+        return response()->json(['data'=> $book], 200);
     }
     public function myorders($id) {
         $orders = Order::where('user_id', $id)->get();
@@ -45,13 +68,23 @@ class OrdersController extends Controller
         $request->validate([
             'lang' => 'required',
             'lat' => 'required',
-            'user_id' => 'required'
+            'order_id' => 'required',
+            'user_id' => 'required',
         ]);
         $user = User::findOrFail($request->user_id);
+        $order = Order::findOrFail($request->user_id);
         $user->update([
             'lang' => $request->lang,
             'lat' => $request->lat,
         ]);
-        return response()->json(['data' => $user]);
+        $order->update([
+            'lang' => $request->lang,
+            'lat' => $request->lat,
+        ]);
+        return response()->json(['user' => $user, 'order' => $order]);
+    }
+    public function employeeprofile($id) {
+        $empl = Employee::findOrFail($id);
+        return response()->json(['employee' => $empl], 200);
     }
 }

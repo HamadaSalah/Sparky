@@ -38,4 +38,7 @@ class RequestController extends Controller
         $mybids = OrderRequest::with('order')->where('employee_id', $id)->whereRelation('order', 'status', 'Canceled')->get();
         return response()->json(['data' => $mybids], 200);
     }
+    public function NewEmployeeOrders() {
+        
+    }
 }

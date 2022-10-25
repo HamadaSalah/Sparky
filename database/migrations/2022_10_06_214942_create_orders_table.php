@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('type');
             $table->string('user_id');
             $table->string('status')->default('Pending');
+            $table->string('lang')->nullable();
+            $table->string('lat')->nullable();
             $table->timestamps();
         });
     }

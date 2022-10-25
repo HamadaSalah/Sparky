@@ -20,8 +20,25 @@ class EmpSeeder extends Seeder
             'name' => 'Plumber'
         ]);
         Category::create([
+            'name' => 'create',
+            'category_id' => 1
+        ]);
+        Category::create([
+            'name' => 'maintain',
+            'category_id' => 1
+        ]);
+        Category::create([
             'name' => 'Carpenter'
         ]);
+        Category::create([
+            'name' => 'maintain',
+            'category_id' => 2
+        ]);
+        Category::create([
+            'name' => 'create',
+            'category_id' => 2
+        ]);
+
         Category::create([
             'name' => 'Painter'
         ]);

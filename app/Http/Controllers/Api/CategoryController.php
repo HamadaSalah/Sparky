@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     public function allcats() {
-        return response()->json(['data'=>Category::get(['id', 'name'])]);
+        return response()->json(['data'=>Category::with('categories')->get()]);
     }
 
 }
