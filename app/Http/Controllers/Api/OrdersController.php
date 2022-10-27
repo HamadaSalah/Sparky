@@ -63,7 +63,8 @@ class OrdersController extends Controller
     }
     public function order($id) {
         $order = Order::findOrFail($id);
-        return response()->json(['data' => $order], 200);
+        $employees = Employee::all();
+        return response()->json(['data' => $order, 'employees' => $employees], 200);
     }
     public function SendLocation(Request $request) {
         $request->validate([
@@ -81,5 +82,9 @@ class OrdersController extends Controller
     public function employeeprofile($id) {
         $empl = Employee::with('ratings')->findOrFail($id);
         return response()->json(['employee' => $empl], 200);
+    }
+    public function NewOrders($id) {
+        $orders = Order::where('status', 'Pending')->where('user_id', $id)->get();
+        return response()->json(['orders' => $orders], 200);
     }
 }

@@ -37,6 +37,7 @@ Route::group(['middleware' => 'api'], function ($router) {
     Route::get('myorders/{id}', [OrdersController::class, 'myorders']);
     Route::post('dis', [OrdersController::class, 'dis']);
     Route::get('order/{id}', [OrdersController::class, 'order']);
+    Route::get('NewOrders/{id}', [OrdersController::class, 'NewOrders']);
     Route::get('myordersCurrent/{id}', [OrdersController::class, 'myordersCurrent']);
     Route::get('myordersCompleted/{id}', [OrdersController::class, 'myordersCompleted']);
     Route::get('myordersCanceled/{id}', [OrdersController::class, 'myordersCanceled']);
