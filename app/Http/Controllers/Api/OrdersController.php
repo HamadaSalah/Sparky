@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Employee;
 use App\Models\Order;
+use App\Models\Rating;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -44,7 +45,7 @@ class OrdersController extends Controller
         return response()->json(['data'=> $book], 200);
     }
     public function myorders($id) {
-        $orders = Order::where('user_id', $id)->get();
+        $orders = Order::where('user_id', $id)->with('category', 'subcategory')->get();
         return response()->json(['data' => $orders], 200);
     }
     public function myordersCurrent($id) {
@@ -86,5 +87,17 @@ class OrdersController extends Controller
     public function NewOrders($id) {
         $orders = Order::where('status', 'Pending')->where('user_id', $id)->get();
         return response()->json(['orders' => $orders], 200);
+    }
+    public function addNewRating(Request $request) {
+        $request->validate([
+            'user_id' => 'required',
+            'employee_id' => 'required',
+            'stars' => 'required',
+            'comment' => 'required',
+        ]);
+        $requestData = $request->only(['user_id','employee_id','stars','comment']);
+        $rat = Rating::create($requestData);
+        return response()->json(['ratings' => $rat], 200);
+
     }
 }

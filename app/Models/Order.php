@@ -16,6 +16,9 @@ class Order extends Model
     public function category() {
         return $this->hasOne('App\Models\Category', 'id', 'cat_id');
     }
+    public function subcategory() {
+        return $this->hasOne('App\Models\Category', 'id', 'subcat_id');
+    }
     public function books() {
         return $this->hasMany(Book::class);
     }
