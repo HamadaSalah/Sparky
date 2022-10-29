@@ -16,7 +16,8 @@ class Book extends Model
         return $this->belongsTo('App\Models\Order', 'order_id', 'id');
     }
     public function employee() {
-        return $this->belongsTo('App\Models\Employee', 'employee_id', 'id');
+        return $this->hasOne('App\Models\Employee', 'employee_id', 'id');
     }
+
 
 }

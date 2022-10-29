@@ -32,4 +32,7 @@ class Employee extends Authenticatable implements JWTSubject
     public function ratings() {
         return $this->hasMany(Rating::class);
     }
+    public function book() {
+        return $this->hasOne(Book::class);
+    }
 }

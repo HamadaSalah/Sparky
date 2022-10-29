@@ -14,10 +14,10 @@ class OrdersController extends Controller
     public function AddNewOrder(Request $request) {
         $request->validate([
             'cat_id' => 'required|numeric',
-            'type' => 'required',
+            'subcat_id' => 'required|numeric',
             'user_id' => 'required|numeric'
         ]);
-        $requestData = $request->only(['cat_id','type','user_id']);
+        $requestData = $request->only(['cat_id', 'subcat_id','user_id']);
         $order = Order::create($requestData);
         $emp = User::findOrFail($request->user_id);
         // $employees =   Employee::selectRaw("ST_Distance_Sphere(
@@ -29,7 +29,7 @@ class OrdersController extends Controller
         //             Point(lang, lat)
         //         ) <  ? ", 50000)
         // ->select(['id', 'name', 'photo', 'phone', 'fcm_token'])->get();
-        $employees = Employee::all();
+        $employees = Employee::with('ratings')->get();
         return response()->json(['data' => $order, 'Employees' => $employees], 200);
     }
     public function BookOrder(Request $request) {
@@ -63,7 +63,7 @@ class OrdersController extends Controller
     }
     public function order($id) {
         $order = Order::findOrFail($id);
-        $employees = Employee::all();
+        $employees = Employee::with('book')->get();
         return response()->json(['data' => $order, 'employees' => $employees], 200);
     }
     public function SendLocation(Request $request) {
@@ -80,12 +80,11 @@ class OrdersController extends Controller
         return response()->json(['user' => $user]);
     }
     public function employeeprofile($id) {
-        $empl = Employee::with('ratings')->findOrFail($id);
+        $empl = Employee::with('ratings')->with('ratings.user')->findOrFail($id);
         return response()->json(['employee' => $empl], 200);
     }
     public function NewOrders($id) {
         $orders = Order::where('status', 'Pending')->where('user_id', $id)->get();
-        $employees = Employee::all();
-        return response()->json(['orders' => $orders, 'Employees' => $employees], 200);
+        return response()->json(['orders' => $orders], 200);
     }
 }
