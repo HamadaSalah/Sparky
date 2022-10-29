@@ -85,6 +85,7 @@ class OrdersController extends Controller
     }
     public function NewOrders($id) {
         $orders = Order::where('status', 'Pending')->where('user_id', $id)->get();
-        return response()->json(['orders' => $orders], 200);
+        $employees = Employee::all();
+        return response()->json(['orders' => $orders, 'Employees' => $employees], 200);
     }
 }
