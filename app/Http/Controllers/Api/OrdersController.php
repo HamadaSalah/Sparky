@@ -80,9 +80,20 @@ class OrdersController extends Controller
         ]);
         return response()->json(['user' => $user]);
     }
-    public function employeeprofile($id) {
-        $empl = Employee::with('ratings')->with('ratings.user')->findOrFail($id);
-        return response()->json(['employee' => $empl], 200);
+    public function employeeprofile($id, Request $request) {
+         if($request->order_id) {
+            $orderId = $request->order_id;
+            $empl = Employee::with('ratings')->with('ratings.user')->with(['book' => function ($query) use($orderId ) {
+                $query->where('order_id',  $orderId);
+            }])->get();
+             return response()->json(['employee' => $empl ], 200);
+    }
+        else {
+            $empl = Employee::with('ratings')->with('ratings.user')->findOrFail($id);
+
+            return response()->json(['employee' => $empl], 200);
+
+        }
     }
     public function NewOrders($id) {
         $orders = Order::where('status', 'Pending')->where('user_id', $id)->get();
