@@ -87,9 +87,7 @@ class OrdersController extends Controller
     public function employeeprofile($id, Request $request) {
          if($request->order_id) {
             $orderId = $request->order_id;
-            $empl = Employee::with('ratings')->with('ratings.user')->with(['book' => function ($query) use($orderId ) {
-                $query->where('order_id',  $orderId);
-            }])->get();
+            $empl = Employee::with('ratings', 'category')->with('ratings.user')->get();
              return response()->json(['employee' => $empl ], 200);
     }
         else {
