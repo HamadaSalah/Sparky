@@ -29,15 +29,15 @@ class RequestController extends Controller
         return response()->json(['data' => $mybids], 200);
     }
     public function MyCurrentBid($id) {
-        $mybids = order::where('employee_id', $id)->where('status', 'Current')->get();
+        $mybids = order::with('category')->where('employee_id', $id)->where('status', 'Current')->get();
         return response()->json(['data' => $mybids], 200);
     }
     public function MyCompletedBid($id) {
-        $mybids = order::where('employee_id', $id)->where('Completed')->get();
+        $mybids = order::where('employee_id', $id)->where('status', 'Completed')->get();
         return response()->json(['data' => $mybids], 200);
     }
     public function MyCanceledBid($id) {
-        $mybids = order::where('employee_id', $id)->where('Canceled')->get();
+        $mybids = order::where('employee_id', $id)->where('status', 'Canceled')->get();
         return response()->json(['data' => $mybids], 200);
     }
     public function NewEmployeeOrders($id) {
