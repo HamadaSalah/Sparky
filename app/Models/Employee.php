@@ -37,4 +37,7 @@ class Employee extends Authenticatable implements JWTSubject
     public function book() {
         return $this->hasOne(Book::class);
     }
+    public function category() {
+        return $this->belongsTo(Category::class, 'cat_id', 'id');
+    }
 }
