@@ -30,7 +30,8 @@ class User extends Authenticatable implements JWTSubject
         'birthday',
         'fcm_token',
         'lang',
-        'lat'
+        'lat',
+        'photo'
     ];
 
     /**
