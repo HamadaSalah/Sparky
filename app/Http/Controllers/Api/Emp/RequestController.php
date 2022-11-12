@@ -29,7 +29,7 @@ class RequestController extends Controller
         return response()->json(['data' => $mybids], 200);
     }
     public function MyCurrentBid($id) {
-        $mybids = order::where('employee_id', $id)->where('Current')->get();
+        $mybids = order::where('employee_id', $id)->where('status', 'Current')->get();
         return response()->json(['data' => $mybids], 200);
     }
     public function MyCompletedBid($id) {

@@ -66,8 +66,10 @@ class OrdersController extends Controller
 
     }
     public function order($id) {
-        $order = Order::with('books:id,order_id,employee_id' , 'books.employee:id,name,email,phone')->findOrFail($id);
-        return response()->json(['data' => $order ], 200);
+        $order = Order::with('books:id,order_id,employee_id' , 'books.employee:id,name,email,phone,photo', 'category')->findOrFail($id);
+        $subcat = Category::findMany($order->subcat_id);
+
+        return response()->json(['data' => $order, 'subcats' => $subcat ], 200);
     }
     public function SendLocation(Request $request) {
         $request->validate([
