@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Order;
 use App\Models\Rating;
@@ -15,12 +16,12 @@ class OrdersController extends Controller
     public function AddNewOrder(Request $request) {
         $request->validate([
             'cat_id' => 'required|numeric',
-            'subcat_id' => 'required|numeric',
+            'subcat_id' => 'required|array',
             'user_id' => 'required|numeric'
         ]);
         $requestData = $request->only(['cat_id', 'subcat_id','user_id']);
         $order = Order::create($requestData);
-        $emp = User::findOrFail($request->user_id);
+        // $emp = User::findOrFail($request->user_id);
         // $employees =   Employee::selectRaw("ST_Distance_Sphere(
         //     Point($emp->lang, $emp->lat), 
         //     Point(lang, lat)
@@ -30,8 +31,10 @@ class OrdersController extends Controller
         //             Point(lang, lat)
         //         ) <  ? ", 50000)
         // ->select(['id', 'name', 'photo', 'phone', 'fcm_token'])->get();
-        $employees = Employee::with('ratings')->get();
-        return response()->json(['data' => $order, 'Employees' => $employees], 200);
+        // $employees = Employee::with('ratings')->get();
+        $order = Order::with(['category'])->find($order->id);
+        $subcat = Category::findMany($order->subcat_id);
+        return response()->json(['data' => $order, 'subcats' => $subcat], 200);
     }
     public function BookOrder(Request $request) {
         $request->validate([
@@ -45,7 +48,7 @@ class OrdersController extends Controller
         return response()->json(['data'=> $book], 200);
     }
     public function myorders($id) {
-        $orders = Order::where('user_id', $id)->with('category', 'subcategory')->get();
+        $orders = Order::where('user_id', $id)->with('category')->get();
         return response()->json(['data' => $orders], 200);
     }
     public function myordersCurrent($id) {
@@ -63,9 +66,8 @@ class OrdersController extends Controller
 
     }
     public function order($id) {
-        $order = Order::findOrFail($id);
-        $employees = Employee::with('book')->get();
-        return response()->json(['data' => $order, 'employees' => $employees], 200);
+        $order = Order::with('books:id,order_id,employee_id' , 'books.employee:id,name,email,phone')->findOrFail($id);
+        return response()->json(['data' => $order ], 200);
     }
     public function SendLocation(Request $request) {
         $request->validate([
@@ -109,6 +111,31 @@ class OrdersController extends Controller
         $requestData = $request->only(['user_id','employee_id','stars','comment']);
         $rat = Rating::create($requestData);
         return response()->json(['ratings' => $rat], 200);
+
+    }
+    public function SelectEmployeeToOrder(Request $request) {
+        $request->validate([
+            'employee_id' => 'required',
+            'order_id' => 'required',
+        ]);
+        $order = Order::findOrFail($request->order_id);
+        $order->update([
+            'employee_id' => $request->employee_id,
+            'status' => 'Current',
+        ]);
+        return response()->json(['data' => $order], 200);
+
+    }
+    public function changeOrderStatus(Request $request) {
+        $request->validate([
+            'order_id' => 'required',
+            'status' => 'required',
+        ]);
+        $order = Order::findOrFail($request->order_id);
+        $order->update([
+            'status' => $request->status,
+        ]);
+        return response()->json(['data' => $order], 200);
 
     }
 }

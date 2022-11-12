@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -52,6 +54,19 @@ class EmpSeeder extends Seeder
             'name' => 'sparky',
             'email' => 'admin@sparky.com',
             'password' => bcrypt('12332100')
+        ]);
+        User::create([
+            'chat_id' => '1',
+            'name' => 'test',
+            'email' => 'test@test.com',
+            'password' => bcrypt('12332100'),
+            'phone' => '01124928786'
+        ]);
+        Employee::create([
+            'name' => 'test',
+            'email' => 'test@test.com',
+            'password' => bcrypt('12332100'),
+            'phone' => '01124928786'
         ]);
     }
 }

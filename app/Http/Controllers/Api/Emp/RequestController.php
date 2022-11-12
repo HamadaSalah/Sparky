@@ -29,30 +29,29 @@ class RequestController extends Controller
         return response()->json(['data' => $mybids], 200);
     }
     public function MyCurrentBid($id) {
-        $mybids = OrderRequest::with('order')->where('employee_id', $id)->whereRelation('order', 'status', 'Current')->get();
+        $mybids = order::where('employee_id', $id)->where('Current')->get();
         return response()->json(['data' => $mybids], 200);
     }
     public function MyCompletedBid($id) {
-        $mybids = OrderRequest::with('order')->where('employee_id', $id)->whereRelation('order', 'status', 'Completed')->get();
+        $mybids = order::where('employee_id', $id)->where('Completed')->get();
         return response()->json(['data' => $mybids], 200);
     }
     public function MyCanceledBid($id) {
-        $mybids = OrderRequest::with('order')->where('employee_id', $id)->whereRelation('order', 'status', 'Canceled')->get();
+        $mybids = order::where('employee_id', $id)->where('Canceled')->get();
         return response()->json(['data' => $mybids], 200);
     }
     public function NewEmployeeOrders($id) {
         $orders = Book::where('employee_id', $id)->get();
         return response()->json(['data' => $orders], 200);
     }
+    //ACEPT ORDER
     public function ChangeBookStatus(Request $request) {
         $request->validate([
-            'id' => 'required',
-            'status' => 'required'
+            'order_id' => 'required',
+            'employee_id' => 'required',
         ]);
-        $order = Book::findOrFail($request->id);
-        $order->update([
-            'status' => $request->status
-        ]);
+        $requestData = $request->only(['order_id', 'employee_id']);
+        $order = Book::create($requestData);
         return response()->json(['data' => $order], 200);
     }
 }

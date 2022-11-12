@@ -15,11 +15,13 @@ class Employee extends Authenticatable implements JWTSubject
 
 
     protected $guarded = [];
+    protected $casts = [
+        'sub_cat_id' => 'array'
+    ];
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
-
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *

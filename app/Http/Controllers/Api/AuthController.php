@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
@@ -21,8 +22,10 @@ class AuthController extends Controller
         if (User::where('phone', $request->phone)->first() == null) {
              $request->validate([
                 'phone' => 'required|unique:users'
-            ]);    
+            ]);
+            $lastU  =  User::latest('created_at')->first();
             $user = User::create([
+                'chat_id' => $lastU->chat_id+2,
                 'phone' => request()->phone,
                 'password' => bcrypt('testpass')
             ]);

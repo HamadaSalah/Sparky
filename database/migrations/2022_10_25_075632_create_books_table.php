@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('order_id')->nullable();
-            $table->string('user_id')->nullable();
             $table->string('employee_id')->nullable();
-            $table->string('status')->default('Pending');
+            // $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

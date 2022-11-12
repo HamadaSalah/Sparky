@@ -27,6 +27,8 @@ return new class extends Migration
             $table->boolean('isVerified')->default(false);
             $table->string('lang')->nullable();
             $table->string('lat')->nullable();
+            $table->string('cat_id')->nullable();
+            $table->json('sub_cat_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
