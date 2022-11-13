@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     public function allcats() {
-        return response()->json(['data'=>Category::with('categories')->get()]);
+        return response()->json(['data'=>Category::with('category')->get()]);
     }
     public function subcats($id) {
         $subs = Category::where('category_id', $id)->get();
