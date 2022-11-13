@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\EmployeesController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\UserController;
@@ -26,9 +27,11 @@ Route::middleware('guest:admin')->name('admin.')->group(function () {
 Route::middleware('auth:admin')->name('admin.')->group(function () {
     Route::get('/index', [LoginController::class, 'index'])->name('index');
     Route::resource('/users', UserController::class);
+    Route::resource('/employees', EmployeesController::class);
     Route::resource('/orders', OrdersController::class);
     Route::resource('/category', CategoriesController::class);
     Route::post('UpdateUserStatus', [UserController::class, 'UpdateUserStatus'])->name('UpdateUserStatus');
+    Route::post('UpdateEmpStatus', [UserController::class, 'UpdateEmpStatus'])->name('UpdateEmpStatus');
     // Route::resource('/clients', ClientController::class);
     // Route::resource('orders', OrdersController::class);
     // Route::resource('countries', CountryController::class);

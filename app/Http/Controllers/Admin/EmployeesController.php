@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class EmployeesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('Admin.Users.index', [
-            'users' => User::latest('id')->get()->skip(1)
+        return view('Admin.Employees.index', [
+            'users' => Employee::latest('id')->get()->skip(1)
         ]);
     }
 
@@ -84,25 +83,12 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        $user = Employee::findOrFail($id);
         $user->delete();
         return redirect()->back()->with('success', 'User Deleted Successfully');
     }
 
     public function UpdateUserStatus(Request $request) {
-        $user = User::findOrfail($request->id);
-        if($user->isVerified == true) {
-            $user->update([
-                'isVerified' => false
-            ]);
-        }
-        else {
-            $user->update([
-                'isVerified' => true
-            ]);
-        }
-    }
-    public function UpdateEmpStatus(Request $request) {
         $user = Employee::findOrfail($request->id);
         if($user->isVerified == true) {
             $user->update([

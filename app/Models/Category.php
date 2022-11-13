@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public function categories() {
-        return $this->hasMany(Category::class);
+    public function category() {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 }

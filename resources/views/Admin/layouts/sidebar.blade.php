@@ -20,6 +20,12 @@
                             <p>USERS</p>
                         </a>
                     </li>
+                    <li class="{{ Request::segment(2) == 'employees' ? 'active' : null }}">
+                        <a class="nav-link" href="{{route('admin.employees.index')}}">
+                            <i class="nc-icon nc-single-02"></i>
+                            <p>HAND CRAFTS</p>
+                        </a>
+                    </li>
                     <li class="{{ Request::segment(2) == 'orders' ? 'active' : null }}">
                         <a class="nav-link" href="{{route('admin.orders.index')}}">
                             <i class="nc-icon nc-delivery-fast"></i>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoriesController extends Controller
 {
@@ -16,7 +17,8 @@ class CategoriesController extends Controller
     public function index()
     {
         return view('Admin.Category.index', [
-            'cats' => Category::all()
+            'cats' => Category::all(),
+            'maincats' =>Category::where('category_id', NULL)->get()
         ]);
     }
 
@@ -41,9 +43,17 @@ class CategoriesController extends Controller
         $request->validate([
             'name' => 'required'
         ]);
-        Category::create([
-            'name' => $request->name
-        ]);
+        $requestData = $request->only(['name', 'category_id', 'img']);
+        if ($request->hasFile('img')) {
+             $file = $request->file('img');
+            $ext = $file->getClientOriginalExtension();
+            $filename = 'imgs'.'_'.time().'.'.$ext;
+            $storagePath = Storage::disk('public_uploads')->put('/cats', $file);
+            $storageName = basename($storagePath);
+            $requestData['img'] = $storageName;
+       }
+
+        Category::create($requestData);
         return redirect()->back()->with('success', 'Category Added Successfully');
     }
 
@@ -55,7 +65,6 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -66,7 +75,11 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('Admin.Category.edit', [
+            'cat' => Category::findOrFail($id),
+            'maincats' =>Category::where('category_id', NULL)->get()
+        ]);
+
     }
 
     /**
@@ -78,7 +91,21 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+        $requestData = $request->only(['name', 'category_id', 'img']);
+        if ($request->hasFile('img')) {
+             $file = $request->file('img');
+            $ext = $file->getClientOriginalExtension();
+            $filename = 'imgs'.'_'.time().'.'.$ext;
+            $storagePath = Storage::disk('public_uploads')->put('/cats', $file);
+            $storageName = basename($storagePath);
+            $requestData['img'] = $storageName;
+       }
+       $cat = Category::findOrFail($id);
+       $cat ->update($requestData);
+        return redirect()->route('admin.category.index')->with('success', 'Category Updated Successfully');
     }
 
     /**

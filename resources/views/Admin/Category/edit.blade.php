@@ -4,41 +4,30 @@
 
 <div class="clearfix"></div>
 
-<form method="POST" action="{{route('admin.slider.update', $slider->id)}}" enctype="multipart/form-data">
+<form action="{{route('admin.category.update', $cat->id)}}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="form-group">
-        <label for="name">Head (AR)</label>
-        <input type="name" class="form-control" id="name" name="head_ar"  placeholder="Write Head.." required value="{{$slider->head_ar}}">
-    </div>
-    <div class="form-group">
-        <label for="email">Body (AR)</label>
-        <input type="text" class="form-control" id="email" name="body_ar"  placeholder="Write Body.." required value="{{$slider->body_ar}}">
-    </div>
-    <div class="form-group">
-        <label for="name">Head (EN)</label>
-        <input type="name" class="form-control" id="name" name="head_en"  placeholder="Write Head.." required value="{{$slider->head_en}}">
-    </div>
-    <div class="form-group">
-        <label for="email">Body (EN)</label>
-        <input type="text" class="form-control" id="email" name="body_en"  placeholder="Write Body.." required value="{{$slider->body_en}}">
-    </div>
-    <div class="form-group">
-        <label for="name">Head (SO)</label>
-        <input type="name" class="form-control" id="name" name="head_so"  placeholder="Write Head.." required value="{{$slider->head_so}}"
- value="{{$slider->body_ar}}">
-    </div>
-    <div class="form-group">
-        <label for="email">Body (SO)</label>
-        <input type="text" class="form-control" id="email" name="body_so"  placeholder="Write Body.." required value="{{$slider->body_so}}">
-    </div>
-    <div class="form-group">
-        <label for="img">IMG</label>
-        <input type="file" class="form-control" id="img" name="img"  placeholder="Write Body..">
-    </div>
+        <label for="catname">Category Name</label>
+        <input type="text" name="name" class="form-control" id="catname" aria-describedby="emailHelp" placeholder="Enter Category Name" required value="{{$cat->name}}">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">select Main Category</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="category_id">
+          <option value="">Have Main Cat?</option>
+          @foreach ($maincats as $item)
+          <option @if($cat->category_id == $item->id ) {{"Selected"}} @endif value="{{$item->id}}">{{$item->name}}</option>
+          @endforeach
+        </select>
+        <div class="form-group">
+          <label for="catname">Category Name</label>
+          <input type="file" name="img" class="form-control" >
+        </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+      </div>
+    
+      <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 @push("custom-css")
 

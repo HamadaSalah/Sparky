@@ -15,7 +15,9 @@
         <thead>
             <tr>
                 <th class="border-top-0">#</th>
+                <th class="border-top-0">img</th>
                 <th class="border-top-0">name</th>
+                <th class="border-top-0">Main Category</th>
                 <th class="border-top-0">Action</th>
             </tr>
         </thead>
@@ -23,13 +25,24 @@
             @foreach ($cats as $category)
             <tr>
                 <td>{{$category->id}}</td>
+                <td>
+                  <a data-fancybox="gallery" href="{{asset('cats/'.$category->img)}}"> 
+                  <img src="{{asset('cats/'.$category->img)}}" style="width: 100px;height: 100px;" class="img-thumbnail" alt="">
+                  </a>
+                </td>
                 <td>{{$category->name}}</td>
+                <td>
+                  @if($category->category  ) 
+                  
+                 <span style="background: green;padding: 2px 5px;color: #FFF;border-radius: 5px"> {{$category->category->name}}</span>
+                @endif</td>
             <td>
                     <form style="display: inline;" action="{{route('admin.category.destroy', $category->id)}}" method="post">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Delete</button>
                     </form>
+                    <a href="{{route('admin.category.edit', $category->id)}}"><button class="btn btn-success" value="{{ $category->id }}" type="submit"><i class="fa fa-trash"></i> Edit</button></a>
                 </td>
             </tr>
             @endforeach
@@ -50,16 +63,34 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="{{route('admin.category.store')}}" method="POST">
+          <form action="{{route('admin.category.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="catname">Category Name</label>
                 <input type="text" name="name" class="form-control" id="catname" aria-describedby="emailHelp" placeholder="Enter Category Name" required>
               </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">select Main Category</label>
+                <select class="form-control" id="exampleFormControlSelect1" name="category_id">
+                  <option value="">Have Main Cat?</option>
+                  @foreach ($maincats as $item)
+                  <option value="{{$item->id}}">{{$item->name}}</option>
+                  @endforeach
+                </select>
+                <div class="form-group">
+                  <label for="catname">Category Name</label>
+                  <input type="file" name="img" class="form-control" >
+                </div>
+  
+              </div>
+            
               <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         </div>
        </div>
     </div>
   </div>
+  
+
 @endsection
+  
