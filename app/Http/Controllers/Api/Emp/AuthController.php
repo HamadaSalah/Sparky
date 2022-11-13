@@ -22,8 +22,10 @@ class AuthController extends Controller
              $request->validate([
                 'phone' => 'required|unique:users'
             ]);    
+            $lastU  =  Employee::latest('created_at')->first();
             $user = Employee::create([
                 'phone' => request()->phone,
+                'chat_id' => $lastU->chat_id+2,
                 'password' => bcrypt('testpass')
             ]);
             $user = Employee::findOrFail($user->id);

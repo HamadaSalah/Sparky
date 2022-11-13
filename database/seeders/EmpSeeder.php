@@ -63,6 +63,7 @@ class EmpSeeder extends Seeder
             'phone' => '01124928786'
         ]);
         Employee::create([
+            'chat_id' => '2',
             'name' => 'test',
             'email' => 'test@test.com',
             'password' => bcrypt('12332100'),
