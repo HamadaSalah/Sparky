@@ -64,7 +64,7 @@ Route::group(['middleware' => 'api','prefix' => 'Employee'], function ($router) 
     Route::get('AllNewOrders/{id}', [EmpOrdersController::class, 'AllNewOrders']);
     Route::post('bidRequest', [RequestController::class, 'bidRequest']);
     Route::get('mybids/{id}', [RequestController::class, 'mybids']);
-    Route::get('MyCurrentBid/{id}', [RequestController::class, 'MyCurreentBid']);
+    Route::get('MyCurrentBid/{id}', [RequestController::class, 'MyCurrentBid']);
     Route::get('MyCompletedBid/{id}', [RequestController::class, 'MyCompletedBid']);
     Route::get('MyCanceledBid/{id}', [RequestController::class, 'MyCanceledBid']);
     //new waiting orders
