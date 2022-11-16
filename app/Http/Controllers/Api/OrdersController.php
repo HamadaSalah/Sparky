@@ -48,7 +48,7 @@ class OrdersController extends Controller
         return response()->json(['data'=> $book], 200);
     }
     public function myorders($id) {
-        $orders = Order::where('user_id', $id)->with('category', 'books', 'books.employees')->get();
+        $orders = Order::where('user_id', $id)->with('category', 'books', 'books.employee')->get();
         return response()->json(['data' => $orders], 200);
     }
     public function myordersCurrent($id) {
