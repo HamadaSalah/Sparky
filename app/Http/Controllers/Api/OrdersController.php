@@ -56,12 +56,12 @@ class OrdersController extends Controller
         return response()->json(['data' => $orders], 200);
     }
     public function myordersCompleted($id) {
-        $orders = Order::where('user_id', $id)->where('status', 'Completed')->get();
+        $orders = Order::where('user_id', $id)->where('status', strtolower('Completed'))->with('category', 'books', 'books.employee')->get();
         return response()->json(['data' => $orders], 200);
 
     }
     public function myordersCanceled($id) {
-        $orders = Order::where('user_id', $id)->where('status', 'Canceled')->get();
+        $orders = Order::where('user_id', $id)->where('status', strtolower('canceld'))->with('category', 'books', 'books.employee')->get();
         return response()->json(['data' => $orders], 200);
 
     }
