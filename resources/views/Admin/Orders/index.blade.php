@@ -27,11 +27,10 @@
                 <td>{{$key+1}}</td>
                 <td>
                     @if ($order->user)
-                    {{$order->user->name}}@endif
-                    <br/>
-                       {{$order->user->phone}}
                         
-                     
+                    {{$order->user->name}}<br/>
+                    {{$order->user->phone}}
+                    @endif
                 </td>
                 <td>
                     {{$order->status}}
