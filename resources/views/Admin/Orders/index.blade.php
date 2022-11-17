@@ -26,7 +26,7 @@
             <tr>
                 <td>{{$key+1}}</td>
                 <td>
-                    @if ($order->user->name)
+                    @if ($order->user)
                     {{$order->user->name}}@endif
                     <br/>
                        {{$order->user->phone}}
