@@ -20,7 +20,7 @@ class AuthController extends Controller
         
         if (Employee::where('phone', $request->phone)->first() == null) {
              $request->validate([
-                'phone' => 'required|unique:users'
+                'phone' => 'required|unique:employees'
             ]);    
             $lastU  =  Employee::latest('created_at')->first();
             $user = Employee::create([
