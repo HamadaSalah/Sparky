@@ -26,8 +26,11 @@
             <tr>
                 <td>{{$key+1}}</td>
                 <td>
-                    @{{$order->user->name}}<br/>
-                    @{{$order->user->phone}}
+                    @if ($order->user)
+                    {{$order->user->name}}<br/>
+                    {{$order->user->phone}}
+                        
+                    @endif
                 </td>
                 <td>
                     {{$order->status}}
