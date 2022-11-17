@@ -23,7 +23,7 @@
                 <div class="col-sm-3">
                     <h6 class="mb-0">User Details</h6>
                 </div>
-                <div class="col-sm-3 text-secondary"> @if ($order->user) {{$order->user->name}}<br/>{{$order->user->phone}} @endif</div>
+                <div class="col-sm-3 text-secondary"> @if ($order->user) {{$order->user->name}}@endif<br/>  @if ($order->user){{$order->user->phone}} @endif</div>
              </div>
             <hr>
             <div class="row">
