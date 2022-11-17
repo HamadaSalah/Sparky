@@ -16,7 +16,7 @@ class OrdersController extends Controller
     public function AddNewOrder(Request $request) {
         $request->validate([
             'cat_id' => 'required|numeric',
-            'subcat_id' => 'required|array',
+            // 'subcat_id' => 'required|array',
             'user_id' => 'required|numeric'
         ]);
         $requestData = $request->only(['cat_id', 'subcat_id','user_id']);
