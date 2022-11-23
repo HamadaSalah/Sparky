@@ -24,11 +24,21 @@ class AuthController extends Controller
                 'phone' => 'required|unique:users'
             ]);
             $lastU  =  User::latest('created_at')->first();
-            $user = User::create([
-                'chat_id' => $lastU->chat_id+2,
-                'phone' => request()->phone,
-                'password' => bcrypt('testpass')
-            ]);
+            if(!$lastU) {
+                $user = User::create([
+                    'chat_id' => 1,
+                    'phone' => request()->phone,
+                    'password' => bcrypt('testpass')
+                ]);
+            }
+            else {
+                $user = User::create([
+                    'chat_id' => $lastU->chat_id+2,
+                    'phone' => request()->phone,
+                    'password' => bcrypt('testpass')
+                ]);
+
+            }
             $user = User::findOrFail($user->id);
             $token = Auth::guard('api')->login($user);
             return response()->json(['data' =>  $user, 'token' => $token], 210);
