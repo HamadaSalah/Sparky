@@ -86,7 +86,7 @@ class OrdersController extends Controller
     {
         $user = Order::findOrFail($id);
         $user->delete();
-        return redirect()->back()->with('success', 'User Deleted Successfully');
+        return redirect()->back()->with('success', 'Order Deleted Successfully');
     }
 
     public function UpdateUserStatus(Request $request) {

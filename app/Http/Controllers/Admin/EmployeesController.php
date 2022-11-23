@@ -16,7 +16,8 @@ class EmployeesController extends Controller
     public function index()
     {
         return view('Admin.Employees.index', [
-            'users' => Employee::latest('id')->get()->skip(1)
+            'users' => Employee::latest('id')->get()
+            // ->skip(1)
         ]);
     }
 

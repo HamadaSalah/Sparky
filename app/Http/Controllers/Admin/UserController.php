@@ -17,7 +17,8 @@ class UserController extends Controller
     public function index()
     {
         return view('Admin.Users.index', [
-            'users' => User::latest('id')->get()->skip(1)
+            'users' => User::latest('id')->get()
+            // ->skip(1)
         ]);
     }
 
