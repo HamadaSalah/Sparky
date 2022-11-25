@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api' );
+    }
+
     public function AddNewOrder(Request $request) {
         $request->validate([
             'cat_id' => 'required|numeric',
