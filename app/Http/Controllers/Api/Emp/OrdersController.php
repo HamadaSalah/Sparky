@@ -13,9 +13,9 @@ class OrdersController extends Controller
         $emp = Employee::findOrFail($id);
          if($emp->cat_id) {
             $orders = Order::where('status', 'Pending')->where('cat_id', $emp->cat_id)->with('category')
-            // ->with(['books' => function ($query) use ($id) {
-            //     $query->where('employee_id', $id);
-            // }])
+            ->with(['books' => function ($query) use ($id) {
+                $query->where('employee_id', $id);
+            }])
             ->latest('id')->get();
         }
         else {

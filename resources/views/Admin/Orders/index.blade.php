@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th class="border-top-0">#</th>
-                <th class="border-top-0">User</th>
+                <th class="border-top-0">Orders</th>
                 <th class="border-top-0">Status</th>
                 <th class="border-top-0">Date</th>
                 <th class="border-top-0">Action</th>
@@ -40,6 +40,12 @@
                   <br> <span style="background: green;color: #FFF;padding: 0 5px;border-radius: 5px">{{$order->created_at->diffForHumans()}}</span>
                 </td>
                 <td>
+                    <form style="display: inline;" action="{{route('admin.orders.destroy', $order->id)}}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Delete</button>
+                    </form>
+
                     <a href="{{route('admin.orders.show', $order->id)}}">
                         <button class="btn btn-success">See Details</button>
                     </a>
