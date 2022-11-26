@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {    public function __construct()
     {
-        $this->middleware('auth:api' );
+        $this->middleware('auth:api', ['except' => ['allcats', 'subcats' ]]);
     }
 
     public function allcats() {
