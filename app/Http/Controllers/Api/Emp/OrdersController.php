@@ -10,12 +10,25 @@ use Illuminate\Http\Request;
 class OrdersController extends Controller
 {
     public function AllNewOrders($id) {
-        $emp = Employee::findOrFail($id);
+        $emp = Employee::find($id);
+        if(!$emp ) {
+            return response()->json(['error' => 'EMployee Not Found'], 200);
+        }
          if($emp->cat_id) {
-            $orders = Order::where('status', 'Pending')->where('cat_id', $emp->cat_id)->with('category')
+            $orders = Order::
+            where('cat_id', $emp->cat_id)->with('category')
             ->with(['books' => function ($query) use ($id) {
                 $query->where('employee_id', $id);
             }])
+            // ->selectRaw("ST_Distance_Sphere(
+            //     Point($emp->lang, $emp->lat), 
+            //     Point(lang, lat)
+            // ) * ? as distance", [.000621371192])
+            ->whereRaw("ST_Distance_Sphere(
+                        Point($emp->lang, $emp->lat), 
+                        Point(lang, lat)
+                    ) <  ? ", 50)
+
             ->latest('id')->get();
         }
         else {

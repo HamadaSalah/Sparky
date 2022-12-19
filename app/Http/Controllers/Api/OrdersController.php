@@ -13,10 +13,10 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api', ['except' => ['AddNewOrder']]);
+    // }
 
     public function AddNewOrder(Request $request) {
         $request->validate([
@@ -27,7 +27,8 @@ class OrdersController extends Controller
         $requestData = $request->only(['cat_id', 'subcat_id','user_id']);
         $order = Order::create($requestData);
         // $emp = User::findOrFail($request->user_id);
-        // $employees =   Employee::selectRaw("ST_Distance_Sphere(
+        // $employees =   Employee::
+        //selectRaw("ST_Distance_Sphere(
         //     Point($emp->lang, $emp->lat), 
         //     Point(lang, lat)
         // ) * ? as distance", [1000])

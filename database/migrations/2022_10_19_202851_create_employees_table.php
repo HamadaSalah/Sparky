@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('lang')->nullable();
             $table->string('lat')->nullable();
             $table->string('cat_id')->nullable();
+            $table->string('max_dis')->nullable();
             $table->json('sub_cat_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
