@@ -16,7 +16,7 @@ class OrdersController extends Controller
         }
          if($emp->cat_id) {
             $orders = Order::
-            where('cat_id', $emp->cat_id)->with('category')
+            where('cat_id', $emp->cat_id)->with('category')->with('user')
             ->with(['books' => function ($query) use ($id) {
                 $query->where('employee_id', $id);
             }])
@@ -25,9 +25,13 @@ class OrdersController extends Controller
             //     Point(lang, lat)
             // ) * ? as distance", [.000621371192])
             ->whereRaw("ST_Distance_Sphere(
-                        Point($emp->lang, $emp->lat), 
-                        Point(lang, lat)
-                    ) <  ? ", 50)
+                Point($emp->lang, $emp->lat), 
+                Point(lang, lat)
+            ) <  ? ", $emp->max_dis)
+            ->whereRaw("ST_Distance_Sphere(
+                Point($emp->lang, $emp->lat),
+                Point(lang, lat)
+            ) <  max_dis ")
 
             ->latest('id')->get();
         }
