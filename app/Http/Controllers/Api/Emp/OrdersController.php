@@ -14,28 +14,39 @@ class OrdersController extends Controller
         if(!$emp ) {
             return response()->json(['error' => 'EMployee Not Found'], 200);
         }
-         if($emp->cat_id) {
-            $orders = Order::
-            where('cat_id', $emp->cat_id)->with('category')->with('user')
-            ->with(['books' => function ($query) use ($id) {
-                $query->where('employee_id', $id);
-            }])
-            // ->selectRaw("ST_Distance_Sphere(
-            //     Point($emp->lang, $emp->lat), 
-            //     Point(lang, lat)
-            // ) * ? as distance", [.000621371192])
-            ->whereRaw("ST_Distance_Sphere(
-                Point($emp->lang, $emp->lat), 
-                Point(lang, lat)
-            ) <  ? ", $emp->max_dis)
-            ->whereRaw("ST_Distance_Sphere(
-                Point($emp->lang, $emp->lat),
-                Point(lang, lat)
-            ) <  max_dis ")
+        try {
+            if($emp->cat_id) {
+                try {
+                    $orders = Order::
+                    where('cat_id', $emp->cat_id)->with('category')->with('user')
+                    ->with(['books' => function ($query) use ($id) {
+                        $query->where('employee_id', $id);
+                    }])
+                    // ->selectRaw("ST_Distance_Sphere(
+                    //     Point($emp->lang, $emp->lat), 
+                    //     Point(lang, lat)
+                    // ) * ? as distance", [.000621371192])
+                    ->whereRaw("ST_Distance_Sphere(
+                        Point($emp->lang, $emp->lat), 
+                        Point(lang, lat)
+                    ) <  ? ", $emp->max_dis)
+                    ->whereRaw("ST_Distance_Sphere(
+                        Point($emp->lang, $emp->lat),
+                        Point(lang, lat)
+                    ) <  max_dis ")
+        
+                    ->latest('id')->get();
 
-            ->latest('id')->get();
+                }
+                catch(\Exception $e) {
+                    $orders = [];
+                }
+           }
+           else {
+               $orders = [];
+           }
         }
-        else {
+        catch(\Exception $e) {
             $orders = [];
         }
          return response()->json(['data' => $orders], 200);
