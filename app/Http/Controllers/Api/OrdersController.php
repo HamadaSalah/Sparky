@@ -24,7 +24,7 @@ class OrdersController extends Controller
             // 'subcat_id' => 'required|array',
             'user_id' => 'required|numeric'
         ]);
-        $requestData = $request->only(['cat_id', 'subcat_id','user_id']);
+        $requestData = $request->only(['cat_id', 'subcat_id','user_id', 'notes', 'max_dis']);
         $order = Order::create($requestData);
         // $emp = User::findOrFail($request->user_id);
         // $employees =   Employee::
@@ -121,7 +121,6 @@ class OrdersController extends Controller
             'status' => 'Current',
         ]);
         return response()->json(['data' => $order], 200);
-
     }
     public function changeOrderStatus(Request $request) {
         $request->validate([
