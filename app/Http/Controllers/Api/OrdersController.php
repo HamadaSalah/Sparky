@@ -24,7 +24,7 @@ class OrdersController extends Controller
             // 'subcat_id' => 'required|array',
             'user_id' => 'required|numeric'
         ]);
-        $requestData = $request->only(['cat_id', 'subcat_id','user_id', 'notes', 'max_dis']);
+        $requestData = $request->only(['cat_id', 'subcat_id','user_id', 'notes', 'max_dis', 'lat', 'lang']);
         $order = Order::create($requestData);
         // $emp = User::findOrFail($request->user_id);
         // $employees =   Employee::
