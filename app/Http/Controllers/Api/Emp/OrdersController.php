@@ -18,7 +18,9 @@ class OrdersController extends Controller
             if($emp->cat_id) {
                 try {
                     $orders = Order::
-                    where('cat_id', $emp->cat_id)->with('category')->with('user')
+                    where('cat_id', $emp->cat_id)
+                    ->where('status', 'Pending')
+                    ->with('category')->with('user')
                     ->with(['books' => function ($query) use ($id) {
                         $query->where('employee_id', $id);
                     }])
